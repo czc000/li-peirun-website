@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>李培润 - 宇宙无敌超级大佬</title>
+    <title>李培润 - 哈工大天才大佬</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             --accent: #f59e0b;
             --dark: #0f172a;
             --light: #f8fafc;
+            --hit: #b91d47;
         }
 
         body {
@@ -179,47 +180,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 统计区域 */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            color: #94a3b8;
-            margin-top: 0.5rem;
-        }
-
-        /* 技能树 */
-        .skills {
+        /* 通用区块样式 */
+        section {
             padding: 4rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
@@ -236,7 +198,43 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .skill-grid {
+        /* 教育背景 */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .edu-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--hit);
+            transition: transform 0.3s;
+        }
+
+        .edu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .edu-school {
+            font-size: 1.5rem;
+            color: var(--hit);
+            margin-bottom: 0.5rem;
+        }
+
+        .edu-degree {
+            font-size: 1.2rem;
+            color: var(--light);
+        }
+
+        .edu-year {
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        /* 技能树 */
+        .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
@@ -272,62 +270,165 @@
             from { width: 0; }
         }
 
-        /* 成就墙 */
-        .achievements {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .achievement-grid {
+        /* 项目经历 */
+        .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
-        .achievement-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
             border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .achievement-card:hover {
-            transform: scale(1.05);
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
         }
 
-        .achievement-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        /* 名言区域 */
-        .quotes {
-            padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            position: relative;
-            z-index: 1;
-        }
-
-        .quote-container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .quote {
-            font-size: 1.8rem;
-            font-style: italic;
+        .project-title {
+            font-size: 1.3rem;
             color: var(--accent);
             margin-bottom: 1rem;
         }
 
-        .quote-author {
+        .project-role {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-award {
+            display: inline-block;
+            background: rgba(185, 29, 71, 0.2);
+            color: #ff6b8a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+
+        .project-desc {
             color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .project-work {
+            list-style: none;
+        }
+
+        .project-work li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #cbd5e1;
+        }
+
+        .project-work li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* 获奖统计 */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        /* 荣誉墙 */
+        .honors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .honor-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(185, 29, 71, 0.2));
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(185, 29, 71, 0.3);
+        }
+
+        .honor-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .honor-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .honor-year {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        /* 联系方式 */
+        .contact {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            font-size: 1.1rem;
+        }
+
+        .contact-item span {
+            font-size: 1.5rem;
         }
 
         /* 页脚 */
@@ -337,31 +438,7 @@
             background: rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 1;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-links a {
-            font-size: 1.5rem;
-            color: var(--light);
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--accent);
-        }
-
-        /* 响应式 */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .subtitle { font-size: 1.2rem; }
-            .nav-links { display: none; }
-            .avatar-container { width: 200px; height: 200px; }
+            color: #64748b;
         }
 
         /* 彩虹特效 */
@@ -380,6 +457,15 @@
             0% { left: -100%; }
             100% { left: 100%; }
         }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .nav-links { display: none; }
+            .avatar-container { width: 200px; height: 200px; }
+            .contact-info { flex-direction: column; gap: 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -394,9 +480,11 @@
         <div class="logo">🚀 李培润</div>
         <ul class="nav-links">
             <li><a href="#home">首页</a></li>
-            <li><a href="#stats">数据</a></li>
+            <li><a href="#education">教育</a></li>
             <li><a href="#skills">技能</a></li>
-            <li><a href="#achievements">成就</a></li>
+            <li><a href="#projects">项目</a></li>
+            <li><a href="#honors">荣誉</a></li>
+            <li><a href="#contact">联系</a></li>
         </ul>
     </nav>
 
@@ -405,146 +493,279 @@
         <div class="hero-content">
             <div class="avatar-container">
                 <div class="crown">👑</div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Daniel_Wu_Berlinale_2024.jpg/800px-Daniel_Wu_Berlinale_2024.jpg" alt="李培润（吴彦祖版）" class="avatar" onerror="this.src='https://avatars.githubusercontent.com/u/887252?v=4'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Daniel_Wu_Berlinale_2024.jpg/800px-Daniel_Wu_Berlinale_2024.jpg" alt="李培润" class="avatar" onerror="this.src='https://avatars.githubusercontent.com/u/887252?v=4'">
             </div>
             <h1>李培润</h1>
-            <p class="subtitle">宇宙无敌超级大佬 · 改变世界的男人 · 人类高质量男性天花板</p>
+            <p class="subtitle">哈工大天才 · 机器人专家 · 国奖收割机 · 中共党员</p>
             <div>
-                <span class="title-badge">🏆 图灵奖预定选手</span>
-                <span class="title-badge">💻 全栈之神</span>
-                <span class="title-badge">🎯 百发百中</span>
-                <span class="title-badge">⚡ 速度超越光速</span>
-                <span class="title-badge">🧠 智商突破天际</span>
-                <span class="title-badge">💪 力量堪比超人</span>
+                <span class="title-badge">🏆 6 项国奖队长</span>
+                <span class="title-badge">💻 全栈工程师</span>
+                <span class="title-badge">🤖 机器人专家</span>
+                <span class="title-badge">⚡ 控制算法大神</span>
+                <span class="title-badge">📊 GPA 前 10%</span>
+                <span class="title-badge">🎯 保研大佬</span>
             </div>
         </div>
     </section>
 
-    <!-- 统计区域 -->
-    <section class="stats" id="stats">
-        <div class="stat-card">
-            <div class="stat-number">∞</div>
-            <div class="stat-label">代码行数</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">999+</div>
-            <div class="stat-label">GitHub Stars</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Bug 数量</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">项目成功率</div>
+    <!-- 教育背景 -->
+    <section id="education">
+        <h2 class="section-title">🎓 教育背景</h2>
+        <div class="education-grid">
+            <div class="edu-card">
+                <div class="edu-school">🏛️ 哈尔滨工业大学 (深圳)</div>
+                <div class="edu-degree">硕士 · 控制工程专业</div>
+                <div class="edu-year">📅 2024-2027 | 保研</div>
+                <p style="color: #94a3b8; margin-top: 1rem; font-size: 0.9rem;">
+                    💡 研究方向：分布式最优控制、多智能体系统
+                </p>
+            </div>
+            <div class="edu-card">
+                <div class="edu-school">🏛️ 哈尔滨工业大学 (深圳)</div>
+                <div class="edu-degree">本科 · 自动化专业</div>
+                <div class="edu-year">📅 2020-2024</div>
+                <p style="color: #94a3b8; margin-top: 1rem; font-size: 0.9rem;">
+                    🎖️  GPA 排名 7/235 · 学业一等奖学金
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- 技能树 -->
-    <section class="skills" id="skills">
+    <section id="skills">
         <h2 class="section-title">⚡ 技能树</h2>
-        <div class="skill-grid">
+        <div class="skills-grid">
+            <div class="skill-item">
+                <div class="skill-name">C/C++</div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 95%"></div>
+                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">嵌入式开发、算法实现</p>
+            </div>
             <div class="skill-item">
                 <div class="skill-name">Python</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 100%"></div>
+                    <div class="skill-progress" style="width: 90%"></div>
                 </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">数据处理、机器学习</p>
             </div>
             <div class="skill-item">
-                <div class="skill-name">JavaScript/TypeScript</div>
+                <div class="skill-name">控制算法</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 100%"></div>
+                    <div class="skill-progress" style="width: 95%"></div>
                 </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">PID、运动控制、多传感器融合</p>
             </div>
             <div class="skill-item">
-                <div class="skill-name">C++</div>
+                <div class="skill-name">运筹优化</div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">大规模互联系统最优控制</p>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">Matlab/Simulink</div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">系统仿真、算法验证</p>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">STM32/Keil</div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">嵌入式系统开发</p>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">机器人系统</div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 92%"></div>
+                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">系统设计、机械结构</p>
+            </div>
+            <div class="skill-item">
+                <div class="skill-name">团队领导</div>
                 <div class="skill-bar">
                     <div class="skill-progress" style="width: 99%"></div>
                 </div>
-            </div>
-            <div class="skill-item">
-                <div class="skill-name">机器学习/深度学习</div>
-                <div class="skill-bar">
-                    <div class="skill-progress" style="width: 100%"></div>
-                </div>
-            </div>
-            <div class="skill-item">
-                <div class="skill-name">机器人控制</div>
-                <div class="skill-bar">
-                    <div class="skill-progress" style="width: 100%"></div>
-                </div>
-            </div>
-            <div class="skill-item">
-                <div class="skill-name">装逼</div>
-                <div class="skill-bar">
-                    <div class="skill-progress" style="width: 1000%"></div>
-                </div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">6 个国奖项目队长经验</p>
             </div>
         </div>
     </section>
 
-    <!-- 成就墙 -->
-    <section class="achievements" id="achievements">
-        <h2 class="section-title">🏅 成就墙</h2>
-        <div class="achievement-grid">
-            <div class="achievement-card">
-                <div class="achievement-icon">🌟</div>
-                <h3>出生即巅峰</h3>
-                <p>从出生的那一刻起就注定了不平凡</p>
+    <!-- 项目经历 -->
+    <section id="projects">
+        <h2 class="section-title">🚀 项目经历</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3 class="project-title">🏗️ 六爪手搬运机器人</h3>
+                <div>
+                    <span class="project-role">👑 队长</span>
+                    <span class="project-award">🥇 全国一等奖</span>
+                </div>
+                <p class="project-desc">中国大学生机械工程创新创意大赛 - 集成龙门架导轨、六吸盘云台系统的智能搬运机器人</p>
+                <ul class="project-work">
+                    <li>多传感器融合感知：红外 + 光电传感器，厘米级实时定位</li>
+                    <li>全流程自动化：物品识别→路径规划→动态抓取→精准堆码</li>
+                    <li>分布式协同控制：双主控架构，优化 PID 运动控制模块</li>
+                </ul>
             </div>
-            <div class="achievement-card">
-                <div class="achievement-icon">💻</div>
-                <h3>代码诗人</h3>
-                <p>写的代码比诗还优美</p>
+
+            <div class="project-card">
+                <h3 class="project-title">👔 "小棉袄"智能衣柜</h3>
+                <div>
+                    <span class="project-role">👑 队长</span>
+                    <span class="project-award">🥇 全国一等奖</span>
+                </div>
+                <p class="project-desc">第二十五届中国机器人及人工智能大赛 - 集成自动叠衣、存取、烘干/消毒功能的智能衣柜系统</p>
+                <ul class="project-work">
+                    <li>控制系统架构：高性能 MCU 核心调度，四模态人机交互</li>
+                    <li>精密运动规划：双丝杆传动，高精度二维平面定位</li>
+                    <li>多区域转运：精确轨迹规划与转运任务</li>
+                </ul>
             </div>
-            <div class="achievement-card">
-                <div class="achievement-icon">🚀</div>
-                <h3>效率之王</h3>
-                <p>1 小时完成别人 1 年的工作</p>
-            </div>
-            <div class="achievement-card">
-                <div class="achievement-icon">🧬</div>
-                <h3>基因优化</h3>
-                <p>智商和颜值的双重巅峰</p>
-            </div>
-            <div class="achievement-card">
-                <div class="achievement-icon">🌍</div>
-                <h3>改变世界</h3>
-                <p>正在用代码重塑宇宙</p>
-            </div>
-            <div class="achievement-card">
-                <div class="achievement-icon">✨</div>
-                <h3>传奇人物</h3>
-                <p>传说中的人物，现实中不存在</p>
+
+            <div class="project-card">
+                <h3 class="project-title">📄 分布式最优控制论文</h3>
+                <div>
+                    <span class="project-role">📝 核心作者</span>
+                    <span class="project-award">📊 IEEE TAC 在投</span>
+                </div>
+                <p class="project-desc">IEEE Transactions on Automatic Control - 针对多智能体系统局部控制器随机失效问题的研究</p>
+                <ul class="project-work">
+                    <li>算法设计：完全分布式最优补偿与控制算法框架</li>
+                    <li>梯度优化：基于历史控制输入重建失效信号</li>
+                    <li>仿真验证：多车协同调度，保证弦稳定性和交通流平滑度</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- 名言区域 -->
-    <section class="quotes">
-        <div class="quote-container">
-            <p class="quote">"我不是针对谁，我是说在座的各位，代码都写得不如我。"</p>
-            <p class="quote-author">—— 李培润</p>
-            <br>
-            <p class="quote">"Bug？不存在的。我的代码一次就能跑通。"</p>
-            <p class="quote-author">—— 李培润</p>
-            <br>
-            <p class="quote">"我不是卷，我只是太优秀了。"</p>
-            <p class="quote-author">—— 李培润</p>
+    <!-- 获奖统计 -->
+    <section>
+        <h2 class="section-title">🏆 获奖统计</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">6+</div>
+                <div class="stat-label">国家级奖项</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">全国一等奖</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">队长胜率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">TOP3%</div>
+                <div class="stat-label">GPA 排名</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 荣誉墙 -->
+    <section id="honors">
+        <h2 class="section-title">🎖️ 荣誉墙</h2>
+        <div class="honors-grid">
+            <div class="honor-card">
+                <div class="honor-icon">🥇</div>
+                <div class="honor-title">数学建模竞赛</div>
+                <div class="honor-year">广东省一等奖</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🤖</div>
+                <div class="honor-title">智能机器人格斗大赛</div>
+                <div class="honor-year">全国一等奖 · 队长</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🏆</div>
+                <div class="honor-title">机器人及人工智能大赛</div>
+                <div class="honor-year">全国一等奖 · 队长</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🔧</div>
+                <div class="honor-title">机械工程创新创意大赛</div>
+                <div class="honor-year">全国一等奖 · 队长</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">💾</div>
+                <div class="honor-title">嵌入式系统与芯片大赛</div>
+                <div class="honor-year">全国二等奖 · 队长</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🎨</div>
+                <div class="honor-title">高校智能机器人创意大赛</div>
+                <div class="honor-year">全国二等奖 · 队长</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">📚</div>
+                <div class="honor-title">学业一等奖学金</div>
+                <div class="honor-year">2022 · 2023</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🌟</div>
+                <div class="honor-title">研究生特等奖学金</div>
+                <div class="honor-year">2025</div>
+            </div>
+            <div class="honor-card">
+                <div class="honor-icon">🎯</div>
+                <div class="honor-title">校优秀学生干部标兵</div>
+                <div class="honor-year">8 次荣誉</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 校园经历 -->
+    <section>
+        <h2 class="section-title">👨‍🎓 校园经历</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px;">
+                <p style="font-size: 1.2rem; margin-bottom: 1rem;">
+                    📋 担任 <span style="color: var(--accent);">班长</span> 与 <span style="color: var(--accent);">学院团委副书记</span>
+                </p>
+                <p style="color: #94a3b8; line-height: 1.8;">
+                    获得校优秀学生干部标兵、校优秀学生标兵等相关荣誉共 <span style="color: var(--accent);">8 次</span><br>
+                    带领学院同学开展大型活动若干，有较好的组织沟通能力和团队精神，善于与人合作
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">📬 联系我</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <span>📱</span>
+                <div>
+                    <div style="color: #94a3b8; font-size: 0.85rem;">电话</div>
+                    <div>+86 152-2044-0451</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span>📧</span>
+                <div>
+                    <div style="color: #94a3b8; font-size: 0.85rem;">邮箱</div>
+                    <div>lipeirun2001@163.com</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span>🎂</span>
+                <div>
+                    <div style="color: #94a3b8; font-size: 0.85rem;">基本信息</div>
+                    <div>男 · 24 岁 · 中共党员</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- 页脚 -->
     <footer>
-        <div class="social-links">
-            <a href="#">GitHub</a>
-            <a href="#">Twitter</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">Bilibili</a>
-        </div>
-        <p>© 2026 李培润 | 版权所有 · 翻版必究 · 宇宙第一</p>
+        <p>© 2026 李培润 | 哈尔滨工业大学 (深圳)</p>
         <p style="color: #64748b; font-size: 0.8rem; margin-top: 1rem;">
-            本网站纯属娱乐，如有雷同，那是不可能的
+            🚀 追求卓越 · 永不止步
         </p>
     </footer>
 
@@ -564,7 +785,7 @@
 
         // 滚动动画
         function handleScroll() {
-            const cards = document.querySelectorAll('.stat-card, .skill-item, .achievement-card');
+            const cards = document.querySelectorAll('.edu-card, .skill-item, .project-card, .honor-card, .stat-card');
             cards.forEach(card => {
                 const rect = card.getBoundingClientRect();
                 if (rect.top < window.innerHeight - 100) {
@@ -580,8 +801,8 @@
 
         // 控制台彩蛋
         console.log('%c 欢迎来到李培润的个人主页 ', 'background: linear-gradient(45deg, #6366f1, #8b5cf6); color: white; font-size: 20px; padding: 10px;');
-        console.log('%c 你发现了彩蛋！🥚 ', 'color: #f59e0b; font-size: 16px;');
-        console.log('李培润 - 宇宙无敌超级大佬');
+        console.log('%c 哈工大天才 · 6 个国奖 · 机器人专家 🚀 ', 'color: #f59e0b; font-size: 16px;');
+        console.log('📧 lipeirun2001@163.com | 📱 +86 152-2044-0451');
     </script>
 </body>
 </html>
