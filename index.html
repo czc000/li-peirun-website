@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
         }
 
         :root {
@@ -20,11 +21,39 @@
             --hit: #b91d47;
         }
 
+        /* 自定义鼠标 */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--dark) 0%, #1e1b4b 100%);
             color: var(--light);
             overflow-x: hidden;
+        }
+
+        body.hovering .cursor {
+            transform: scale(1.5);
+            border-color: var(--primary);
         }
 
         /* 粒子背景 */
@@ -67,6 +96,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 0.8rem 2rem;
         }
 
         .logo {
@@ -75,6 +110,12 @@
             background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
         }
 
         .nav-links {
@@ -86,7 +127,24 @@
         .nav-links a {
             color: var(--light);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-links a:hover {
@@ -102,11 +160,24 @@
             padding: 6rem 2rem 4rem;
             position: relative;
             z-index: 1;
+            overflow: hidden;
         }
 
         .hero-content {
             text-align: center;
             max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .avatar-container {
@@ -114,6 +185,12 @@
             width: 300px;
             height: 300px;
             margin: 0 auto 2rem;
+            animation: floatAvatar 3s ease-in-out infinite;
+        }
+
+        @keyframes floatAvatar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .avatar {
@@ -124,6 +201,11 @@
             border: 5px solid var(--primary);
             box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);
             animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
         @keyframes pulse {
@@ -154,11 +236,6 @@
             animation: glow 3s infinite;
         }
 
-        @keyframes glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-
         .subtitle {
             font-size: 1.5rem;
             color: #94a3b8;
@@ -173,6 +250,12 @@
             font-size: 0.9rem;
             margin: 0.5rem;
             animation: slideIn 0.5s ease-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .title-badge:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
         }
 
         @keyframes slideIn {
@@ -196,6 +279,23 @@
             background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 1rem auto 0;
+            border-radius: 2px;
+            animation: expandWidth 2s ease-out;
+        }
+
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 100px; }
         }
 
         /* 教育背景 */
@@ -210,27 +310,19 @@
             padding: 2rem;
             border-radius: 20px;
             border-left: 4px solid var(--hit);
-            transition: transform 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .edu-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .edu-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .edu-school {
-            font-size: 1.5rem;
-            color: var(--hit);
-            margin-bottom: 0.5rem;
-        }
-
-        .edu-degree {
-            font-size: 1.2rem;
-            color: var(--light);
-        }
-
-        .edu-year {
-            color: #94a3b8;
-            margin-top: 0.5rem;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(185, 29, 71, 0.3);
         }
 
         /* 技能树 */
@@ -245,6 +337,19 @@
             padding: 1.5rem;
             border-radius: 15px;
             border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .skill-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .skill-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
         }
 
         .skill-name {
@@ -263,11 +368,12 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             border-radius: 4px;
-            animation: fillBar 1.5s ease-out;
+            width: 0;
+            transition: width 1.5s ease-out;
         }
 
-        @keyframes fillBar {
-            from { width: 0; }
+        .skill-item.visible .skill-progress {
+            width: var(--progress);
         }
 
         /* 项目经历 */
@@ -282,44 +388,60 @@
             padding: 2rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.4);
+            border-color: var(--primary);
         }
 
         .project-title {
             font-size: 1.3rem;
             color: var(--accent);
             margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--primary);
+        }
+
+        .project-role, .project-award {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: transform 0.3s;
         }
 
         .project-role {
-            display: inline-block;
             background: rgba(245, 158, 11, 0.2);
             color: var(--accent);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
         }
 
         .project-award {
-            display: inline-block;
             background: rgba(185, 29, 71, 0.2);
             color: #ff6b8a;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            margin-left: 0.5rem;
+        }
+
+        .project-role:hover, .project-award:hover {
+            transform: scale(1.1);
         }
 
         .project-desc {
             color: #94a3b8;
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
 
         .project-work {
@@ -331,6 +453,7 @@
             padding-left: 1.5rem;
             position: relative;
             color: #cbd5e1;
+            transition: color 0.3s;
         }
 
         .project-work li::before {
@@ -338,6 +461,15 @@
             position: absolute;
             left: 0;
             color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .project-work li:hover {
+            color: var(--light);
+        }
+
+        .project-work li:hover::before {
+            transform: translateX(5px);
         }
 
         /* 获奖统计 */
@@ -353,12 +485,19 @@
             border-radius: 20px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.4);
         }
 
         .stat-number {
@@ -367,6 +506,12 @@
             background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .stat-label {
@@ -387,21 +532,35 @@
             border-radius: 15px;
             text-align: center;
             border: 1px solid rgba(185, 29, 71, 0.3);
+            transition: all 0.4s;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .honor-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .honor-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(185, 29, 71, 0.4);
         }
 
         .honor-icon {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            animation: rotate 3s linear infinite;
         }
 
-        .honor-title {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        .honor-year {
-            color: #94a3b8;
-            font-size: 0.85rem;
+        .honor-card:hover .honor-icon {
+            animation: none;
+            transform: scale(1.2);
         }
 
         /* 联系方式 */
@@ -425,6 +584,15 @@
             gap: 0.5rem;
             color: var(--light);
             font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-5px);
         }
 
         .contact-item span {
@@ -458,6 +626,54 @@
             100% { left: 100%; }
         }
 
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: none;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1) rotate(-360deg);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* 打字机效果 */
+        .typing-effect {
+            overflow: hidden;
+            border-right: 3px solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--accent); }
+        }
+
         /* 响应式 */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
@@ -465,10 +681,16 @@
             .nav-links { display: none; }
             .avatar-container { width: 200px; height: 200px; }
             .contact-info { flex-direction: column; gap: 1rem; }
+            .cursor, .cursor-dot { display: none; }
+            * { cursor: auto; }
         }
     </style>
 </head>
 <body>
+    <!-- 自定义鼠标 -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
     <!-- 彩虹特效 -->
     <div class="rainbow"></div>
 
@@ -476,7 +698,7 @@
     <div class="particles" id="particles"></div>
 
     <!-- 导航栏 -->
-    <nav>
+    <nav id="navbar">
         <div class="logo">🚀 李培润</div>
         <ul class="nav-links">
             <li><a href="#home">首页</a></li>
@@ -495,7 +717,7 @@
                 <div class="crown">👑</div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Daniel_Wu_Berlinale_2024.jpg/800px-Daniel_Wu_Berlinale_2024.jpg" alt="李培润" class="avatar" onerror="this.src='https://avatars.githubusercontent.com/u/887252?v=4'">
             </div>
-            <h1>李培润</h1>
+            <h1 class="typing-effect">李培润</h1>
             <p class="subtitle">哈工大天才 · 机器人专家 · 国奖收割机 · 中共党员</p>
             <div>
                 <span class="title-badge">🏆 6 项国奖队长</span>
@@ -535,59 +757,59 @@
     <section id="skills">
         <h2 class="section-title">⚡ 技能树</h2>
         <div class="skills-grid">
-            <div class="skill-item">
+            <div class="skill-item" data-progress="95%">
                 <div class="skill-name">C/C++</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 95%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">嵌入式开发、算法实现</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="90%">
                 <div class="skill-name">Python</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 90%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">数据处理、机器学习</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="95%">
                 <div class="skill-name">控制算法</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 95%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">PID、运动控制、多传感器融合</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="90%">
                 <div class="skill-name">运筹优化</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 90%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">大规模互联系统最优控制</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="85%">
                 <div class="skill-name">Matlab/Simulink</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 85%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">系统仿真、算法验证</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="90%">
                 <div class="skill-name">STM32/Keil</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 90%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">嵌入式系统开发</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="92%">
                 <div class="skill-name">机器人系统</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 92%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">系统设计、机械结构</p>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-progress="99%">
                 <div class="skill-name">团队领导</div>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: 99%"></div>
+                    <div class="skill-progress"></div>
                 </div>
                 <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">6 个国奖项目队长经验</p>
             </div>
@@ -761,6 +983,9 @@
         </div>
     </section>
 
+    <!-- 回到顶部 -->
+    <div class="back-to-top" id="backToTop">⬆️</div>
+
     <!-- 页脚 -->
     <footer>
         <p>© 2026 李培润 | 哈尔滨工业大学 (深圳)</p>
@@ -770,6 +995,26 @@
     </footer>
 
     <script>
+        // 自定义鼠标
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, .title-badge, .project-card, .edu-card, .skill-item, .honor-card, .stat-card, .contact-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
         // 生成粒子
         function createParticles() {
             const container = document.getElementById('particles');
@@ -783,21 +1028,72 @@
             }
         }
 
-        // 滚动动画
-        function handleScroll() {
-            const cards = document.querySelectorAll('.edu-card, .skill-item, .project-card, .honor-card, .stat-card');
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+        // 滚动动画 - Intersection Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // 技能条动画
+                    if (entry.target.classList.contains('skill-item')) {
+                        const progress = entry.target.getAttribute('data-progress');
+                        entry.target.style.setProperty('--progress', progress);
+                    }
                 }
             });
-        }
+        }, observerOptions);
+
+        document.querySelectorAll('.edu-card, .skill-item, .project-card, .stat-card, .honor-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            // 回到顶部按钮
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // 回到顶部
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 标题打字机效果重置
+        const title = document.querySelector('.typing-effect');
+        title.addEventListener('animationend', () => {
+            title.style.borderRight = 'none';
+        });
 
         // 初始化
         createParticles();
-        window.addEventListener('scroll', handleScroll);
 
         // 控制台彩蛋
         console.log('%c 欢迎来到李培润的个人主页 ', 'background: linear-gradient(45deg, #6366f1, #8b5cf6); color: white; font-size: 20px; padding: 10px;');
