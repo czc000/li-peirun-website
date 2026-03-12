@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六爪手搬运机器人 - 李培润</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --robot: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1e1b4b 100%);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(99, 102, 241, 0.2);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(99, 102, 241, 0.4);
+            transform: translateX(-5px);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--robot), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--robot), var(--accent));
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--robot), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* 通用区块 */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--robot), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 大赛信息 */
+        .contest-info {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(245, 158, 11, 0.1));
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .contest-title {
+            font-size: 1.5rem;
+            color: var(--robot);
+            margin-bottom: 1rem;
+        }
+
+        .contest-detail {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        /* 作品简介 */
+        .intro-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--robot);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        /* 创新点 */
+        .innovation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .innovation-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .innovation-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+            border-color: var(--robot);
+        }
+
+        .innovation-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .innovation-title {
+            font-size: 1.3rem;
+            color: var(--robot);
+            margin-bottom: 1rem;
+        }
+
+        .innovation-desc {
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        /* 技术特点 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(99, 102, 241, 0.1));
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(99, 102, 241, 0.2));
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* 应用前景 */
+        .application-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 900px;
+        }
+
+        .application-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .application-item {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .application-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 团队成员 */
+        .team-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(245, 158, 11, 0.1));
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 900px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .team-person {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .team-role {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        /* 指导教师 */
+        .teacher-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* 获奖信息 */
+        .award-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(16, 185, 129, 0.1));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .award-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .award-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: #64748b;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <a href="index.html#projects" class="back-btn">
+            ← 返回主页
+        </a>
+        <div class="page-title">🏗️ 六爪手搬运机器人</div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🏆 中国大学生机械工程创新创意大赛 全国一等奖</div>
+            <h1>基于龙门架结构的六爪手搬运机器人</h1>
+            <p class="hero-subtitle">智能识别 · 自动分拣 · 高效搬运 · 精准堆码</p>
+            <div class="team-members">
+                <div class="team-member">👤 李培润 (队长)</div>
+                <div class="team-member">👤 赵东平</div>
+                <div class="team-member">👤 庄冠宁</div>
+                <div class="team-member">👤 孙颜克</div>
+                <div class="team-member">👤 刘予稞</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 大赛信息 -->
+    <section>
+        <div class="contest-info">
+            <h3 class="contest-title">📋 大赛信息</h3>
+            <p style="color: #94a3b8;">2023 年中国大学生机械工程创意大赛 "矿源杯"第八届物流技术（起重机）创意赛</p>
+            <div class="contest-detail">
+                <div class="detail-item">
+                    <div class="detail-label">主办单位</div>
+                    <div class="detail-value">中国机械工程学会</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">承办单位</div>
+                    <div class="detail-value">太原科技大学</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">举办时间</div>
+                    <div class="detail-value">2023 年 8 月</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">举办地点</div>
+                    <div class="detail-value">山西·太原</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品简介 -->
+    <section>
+        <h2 class="section-title">📝 作品简介</h2>
+        <div class="intro-card">
+            <p>
+                本作品是一台<span style="color: var(--robot);">基于龙门架结构的智能搬运机器人</span>，具备<span style="color: var(--accent);">六个云台</span>，采用<span style="color: var(--accent);">吸盘技术</span>，通过地面导轨的引导，能够自主有序地从取物区搬运物品，并按照通行规则将物品放置到堆码区。<br><br>
+                机器人配备了<span style="color: var(--robot);">智能识别功能</span>，能够识别不同的物品，并根据物品尺寸和形状进行自适应调整，保证物品的稳定性。
+            </p>
+        </div>
+    </section>
+
+    <!-- 创新点 -->
+    <section>
+        <h2 class="section-title">💡 创新点</h2>
+        <div class="innovation-grid">
+            <div class="innovation-card">
+                <div class="innovation-icon">🏗️</div>
+                <h3 class="innovation-title">龙门架结构 + 吸盘爪子</h3>
+                <p class="innovation-desc">
+                    采用龙门架结构，结合吸盘爪子，使机器人能够<span style="color: var(--robot);">同时搬运多个物品</span>，提高了搬运效率。稳定的结构保证了搬运过程中的精度和安全性。
+                </p>
+            </div>
+            <div class="innovation-card">
+                <div class="innovation-icon">🛤️</div>
+                <h3 class="innovation-title">导轨系统精准定位</h3>
+                <p class="innovation-desc">
+                    导轨系统的应用能够保证机器人在取物区和堆码区之间的<span style="color: var(--robot);">准确运动</span>，确保稳定性。地面导轨引导实现自主有序搬运。
+                </p>
+            </div>
+            <div class="innovation-card">
+                <div class="innovation-icon">👁️</div>
+                <h3 class="innovation-title">智能识别自适应</h3>
+                <p class="innovation-desc">
+                    智能识别功能使机器人能够<span style="color: var(--robot);">自动辨别不同的物品</span>，并根据其特性进行适应性搬运，提高了作业的灵活性和效率。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术特点 -->
+    <section>
+        <h2 class="section-title">⚙️ 技术特点</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🦾</div>
+                <div class="feature-name">六爪手设计</div>
+                <div class="feature-desc">六个独立云台<br>同时抓取多个物品</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧲</div>
+                <div class="feature-name">吸盘技术</div>
+                <div class="feature-desc">真空吸附<br>适应不同形状物品</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛤️</div>
+                <div class="feature-name">地面导轨</div>
+                <div class="feature-desc">自主引导<br>精准定位导航</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-name">智能识别</div>
+                <div class="feature-desc">物品识别<br>自适应调整</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <div class="feature-name">自动堆码</div>
+                <div class="feature-desc">按规则放置<br>整齐有序</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-name">高效搬运</div>
+                <div class="feature-desc">多物品同时<br>搬运效率提升</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 应用前景 -->
+    <section class="application-section">
+        <h2 class="section-title">🚀 应用前景</h2>
+        <p style="color: #cbd5e1; line-height: 1.8; text-align: center; max-width: 800px; margin: 0 auto;">
+            由于该作品具备<span style="color: var(--robot);">智能识别、自动分类、快速搬运</span>的特点，全程自动运行无须人为控制，因此可广泛应用于以下场景：
+        </p>
+        <div class="application-list">
+            <div class="application-item">
+                <div class="application-icon">📦</div>
+                <div style="color: var(--light);">快递分拣行业</div>
+                <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">自动分拣包裹<br>提高处理效率</div>
+            </div>
+            <div class="application-item">
+                <div class="application-icon">🚚</div>
+                <div style="color: var(--light);">物流运输行业</div>
+                <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">货物自动搬运<br>降低人工成本</div>
+            </div>
+            <div class="application-item">
+                <div class="application-icon">🏭</div>
+                <div style="color: var(--light);">工厂生产线</div>
+                <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">物料自动转运<br>提升生产效率</div>
+            </div>
+            <div class="application-item">
+                <div class="application-icon">🏪</div>
+                <div style="color: var(--light);">仓储管理</div>
+                <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem;">智能货物管理<br>优化空间利用</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 团队成员 -->
+    <section class="team-section">
+        <h2 class="section-title" style="margin-bottom: 1rem;">👥 团队成员</h2>
+        <p style="color: #94a3b8;">哈尔滨工业大学 (深圳)</p>
+        <div class="team-grid">
+            <div class="team-person">
+                <div style="color: var(--light); font-weight: bold;">李培润</div>
+                <div class="team-role">👑 队长</div>
+            </div>
+            <div class="team-person">
+                <div style="color: var(--light); font-weight: bold;">赵东平</div>
+                <div class="team-role">👤 队员</div>
+            </div>
+            <div class="team-person">
+                <div style="color: var(--light); font-weight: bold;">庄冠宁</div>
+                <div class="team-role">👤 队员</div>
+            </div>
+            <div class="team-person">
+                <div style="color: var(--light); font-weight: bold;">孙颜克</div>
+                <div class="team-role">👤 队员</div>
+            </div>
+            <div class="team-person">
+                <div style="color: var(--light); font-weight: bold;">刘予稞</div>
+                <div class="team-role">👤 队员</div>
+            </div>
+        </div>
+
+        <!-- 指导教师 -->
+        <div class="teacher-section">
+            <h3 style="color: var(--robot); margin-bottom: 1rem;">👨‍🏫 指导教师</h3>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <div>
+                    <div style="color: var(--light); font-weight: bold;">胡一博</div>
+                    <div style="color: #94a3b8; font-size: 0.85rem;">指导教师</div>
+                </div>
+                <div>
+                    <div style="color: var(--light); font-weight: bold;">戴坤添</div>
+                    <div style="color: #94a3b8; font-size: 0.85rem;">指导教师</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 获奖信息 -->
+    <section class="award-section">
+        <div class="award-icon">🏆</div>
+        <h3 class="award-title">中国大学生机械工程创新创意大赛</h3>
+        <p style="color: #94a3b8; font-size: 1.2rem;">"矿源杯"第八届物流技术（起重机）创意赛</p>
+        <p style="color: var(--robot); font-size: 1.5rem; margin-top: 1rem; font-weight: bold;">🥇 全国一等奖</p>
+        <p style="color: #64748b; margin-top: 1rem;">作品单位：哈尔滨工业大学 (深圳)</p>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 李培润 | 哈尔滨工业大学 (深圳)</p>
+        <p style="margin-top: 0.5rem;">🏗️ 基于龙门架结构的六爪手搬运机器人</p>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 滚动动画
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.contest-info, .intro-card, .innovation-card, .feature-card, .application-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        console.log('%c 六爪手搬运机器人 ', 'background: linear-gradient(45deg, #10b981, #f59e0b); color: white; font-size: 20px; padding: 10px;');
+        console.log('🏆 中国大学生机械工程创新创意大赛 全国一等奖');
+    </script>
+</body>
+</html>
