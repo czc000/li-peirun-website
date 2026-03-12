@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小棉袄智能衣柜 - 李培润</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --wardrobe: #ec4899;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1e1b4b 100%);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(99, 102, 241, 0.2);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(99, 102, 241, 0.4);
+            transform: translateX(-5px);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--wardrobe), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--wardrobe), var(--accent));
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.8); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--wardrobe), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: rgba(236, 72, 153, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+
+        /* 通用区块 */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--wardrobe), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 设计背景 */
+        .bg-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--wardrobe);
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .bg-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 系统框架 */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .framework-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .framework-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(236, 72, 153, 0.3);
+            border-color: var(--wardrobe);
+        }
+
+        .framework-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .framework-title {
+            font-size: 1.3rem;
+            color: var(--wardrobe);
+            margin-bottom: 1rem;
+        }
+
+        .framework-desc {
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        /* 硬件配置 */
+        .hardware-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .hardware-card {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(245, 158, 11, 0.1));
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .hardware-card:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(245, 158, 11, 0.2));
+        }
+
+        .hardware-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hardware-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hardware-spec {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* 功能模块 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(236, 72, 153, 0.3);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            color: var(--wardrobe);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #cbd5e1;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--wardrobe);
+        }
+
+        /* 交互方式 */
+        .interaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .interaction-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .interaction-card:hover {
+            background: rgba(236, 72, 153, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .interaction-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 获奖信息 */
+        .award-section {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(245, 158, 11, 0.1));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .award-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .award-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* 技术参数 */
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .specs-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .specs-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .specs-table td:first-child {
+            font-weight: bold;
+            color: var(--wardrobe);
+            width: 40%;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: #64748b;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .specs-table td { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <a href="index.html#projects" class="back-btn">
+            ← 返回主页
+        </a>
+        <div class="page-title">👔 小棉袄智能衣柜</div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🏆 第六届中国高校智能机器人创意大赛 全国二等奖</div>
+            <h1>"小棉袄"智能衣柜管家</h1>
+            <p class="hero-subtitle">集自动折叠、多元交互、定向存取、温湿检测和消毒去湿于一体的智能家居产品</p>
+            <div class="team-members">
+                <div class="team-member">👤 李培润 (队长)</div>
+                <div class="team-member">👤 谈卓霖</div>
+                <div class="team-member">👤 尚崇轩</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 设计背景 -->
+    <section>
+        <h2 class="section-title">💡 设计初衷与背景</h2>
+        <div class="bg-card">
+            <p style="line-height: 1.8; color: #cbd5e1;">
+                智能家居为家庭生活提供了更便捷、舒适、安全、节能、环保的生活方式。然而，<span style="color: var(--wardrobe);">传统的家庭衣柜存在手动折衣效率低、存放空间不够、储物方式单一</span>等问题。<br><br>
+                因此，我们设计了一款<span style="color: var(--accent);">机器人化的衣柜方案</span>，让智能家居更加完善，提升家庭生活品质。
+            </p>
+        </div>
+    </section>
+
+    <!-- 系统框架 -->
+    <section>
+        <h2 class="section-title">🔧 机器人系统框架</h2>
+        <div class="framework-grid">
+            <div class="framework-card">
+                <div class="framework-icon">🧠</div>
+                <h3 class="framework-title">上位机控制</h3>
+                <p class="framework-desc">
+                    <strong>STM32H750</strong> 作为主控制器，统筹处理所有传感器信息和用户指令，通过串口通信对下位机进行控制。
+                </p>
+            </div>
+            <div class="framework-card">
+                <div class="framework-icon">💻</div>
+                <h3 class="framework-title">下位机辅助</h3>
+                <p class="framework-desc">
+                    <strong>Arduino UNO</strong> 辅助 STM32 工作，通过数字信号对执行结果进行反馈，实现分布式控制。
+                </p>
+            </div>
+            <div class="framework-card">
+                <div class="framework-icon">⚙️</div>
+                <h3 class="framework-title">执行机构</h3>
+                <p class="framework-desc">
+                    控制风扇、紫外灯、显示屏、ESP8266 语音模块、电动推杆、舵机、步进电机等结构。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 硬件配置 -->
+    <section>
+        <h2 class="section-title">🔩 硬件配置</h2>
+        <div class="hardware-grid">
+            <div class="hardware-card">
+                <div class="hardware-icon">📐</div>
+                <div class="hardware-name">整体框架</div>
+                <div class="hardware-spec">长 129cm × 宽 96cm × 高 130cm<br>欧标 20mm 铝材骨架</div>
+            </div>
+            <div class="hardware-card">
+                <div class="hardware-icon">👕</div>
+                <div class="hardware-name">叠衣机器</div>
+                <div class="hardware-spec">四块可旋转叠衣板<br>舵机 + 四杆机构<br>电动推杆前后移动</div>
+            </div>
+            <div class="hardware-card">
+                <div class="hardware-icon">🔄</div>
+                <div class="hardware-name">XY 轴滑台</div>
+                <div class="hardware-spec">双丝杆滑台模组<br>正交布局<br>U 型手爪抬升运送</div>
+            </div>
+            <div class="hardware-card">
+                <div class="hardware-icon">🎯</div>
+                <div class="hardware-name">挂衣区</div>
+                <div class="hardware-spec">电动推杆伸缩<br>晾衣杆自动伸出/收缩<br>侧帘舵机控制</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section>
+        <h2 class="section-title">✨ 核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">🤖 自动折叠</h3>
+                <ul class="feature-list">
+                    <li>四块叠衣板协同工作</li>
+                    <li>舵机控制旋转角度</li>
+                    <li>自动将衣物送到滑台</li>
+                    <li>高效整理衣物</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">🎮 多元交互</h3>
+                <ul class="feature-list">
+                    <li>微信小程序控制</li>
+                    <li>语音识别控制</li>
+                    <li>触摸屏操作</li>
+                    <li>红外遥控器</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">📍 定向存取</h3>
+                <ul class="feature-list">
+                    <li>指定衣物自动取出</li>
+                    <li>XY 轴精确定位</li>
+                    <li>自动运输到存取点</li>
+                    <li>衣物板智能管理</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">🌡️ 温湿检测</h3>
+                <ul class="feature-list">
+                    <li>实时温湿度监测</li>
+                    <li>自动去湿功能</li>
+                    <li>智能风扇控制</li>
+                    <li>保持衣物干爽</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">🦠 消毒烘干</h3>
+                <ul class="feature-list">
+                    <li>紫外灯消毒</li>
+                    <li>热风烘干功能</li>
+                    <li>密闭空间设计</li>
+                    <li>健康衣物护理</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">📊 状态监控</h3>
+                <ul class="feature-list">
+                    <li>衣物存放情况实时显示</li>
+                    <li>烘干进度监控</li>
+                    <li>温湿度数据展示</li>
+                    <li>操作历史记录</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 交互方式 -->
+    <section>
+        <h2 class="section-title">📱 四种交互方式</h2>
+        <div class="interaction-grid">
+            <div class="interaction-card">
+                <div class="interaction-icon">📲</div>
+                <h4>微信小程序</h4>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+                    MQTT 协议连接阿里云<br>户外远程操控<br>实时状态监控
+                </p>
+            </div>
+            <div class="interaction-card">
+                <div class="interaction-icon">🎤</div>
+                <h4>语音控制</h4>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+                    ESP8266 语音模块<br>智能语音识别<br>解放双手操作
+                </p>
+            </div>
+            <div class="interaction-card">
+                <div class="interaction-icon">🖥️</div>
+                <h4>触摸屏</h4>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+                    电容式触控技术<br>直观菜单选择<br>本地快捷操作
+                </p>
+            </div>
+            <div class="interaction-card">
+                <div class="interaction-icon">📡</div>
+                <h4>红外遥控</h4>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+                    NEC 协议通信<br>传统遥控方式<br>简单可靠
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术参数 -->
+    <section>
+        <h2 class="section-title">📋 技术参数</h2>
+        <table class="specs-table">
+            <tr>
+                <td>整体尺寸</td>
+                <td>长 129cm × 宽 96cm × 高 130cm</td>
+            </tr>
+            <tr>
+                <td>框架材料</td>
+                <td>欧标 20mm×20mm 铝材 (OL2020)</td>
+            </tr>
+            <tr>
+                <td>主控芯片</td>
+                <td>STM32H750 (上位机) + Arduino UNO (下位机)</td>
+            </tr>
+            <tr>
+                <td>通信方式</td>
+                <td>串口通信、MQTT、WiFi (ESP8266)</td>
+            </tr>
+            <tr>
+                <td>交互方式</td>
+                <td>小程序、语音、触摸屏、红外遥控</td>
+            </tr>
+            <tr>
+                <td>执行机构</td>
+                <td>舵机、步进电机、电动推杆、风扇、紫外灯</td>
+            </tr>
+            <tr>
+                <td>传动方式</td>
+                <td>双丝杆滑台模组 (X/Y 轴正交布局)</td>
+            </tr>
+            <tr>
+                <td>叠衣机构</td>
+                <td>四块旋转叠衣板 + 四杆机构</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 获奖信息 -->
+    <section class="award-section">
+        <div class="award-icon">🏆</div>
+        <h3 class="award-title">第六届中国高校智能机器人创意大赛</h3>
+        <p style="color: #94a3b8; font-size: 1.2rem;">主题一赛道 · 全国二等奖</p>
+        <p style="color: #64748b; margin-top: 1rem;">参赛组别：自制实物组</p>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 李培润 | 哈尔滨工业大学 (深圳)</p>
+        <p style="margin-top: 0.5rem;">👔 "小棉袄"智能衣柜管家</p>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 滚动动画
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.bg-card, .framework-card, .hardware-card, .feature-card, .interaction-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        console.log('%c "小棉袄"智能衣柜管家 ', 'background: linear-gradient(45deg, #ec4899, #f59e0b); color: white; font-size: 20px; padding: 10px;');
+        console.log('🏆 第六届中国高校智能机器人创意大赛 全国二等奖');
+    </script>
+</body>
+</html>
